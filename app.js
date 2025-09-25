@@ -19,6 +19,8 @@ function render() {
   categories.forEach(cat => {
     const catDiv = document.createElement('div');
     catDiv.className = 'category';
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'items-container';
     const title = document.createElement('h2');
     title.textContent = cat;
     catDiv.appendChild(title);
@@ -91,8 +93,10 @@ function render() {
       });
       div.appendChild(editBtn);
 
-      catDiv.appendChild(div);
+      itemsContainer.appendChild(div);
     });
+    catDiv.appendChild(title);
+    catDiv.appendChild(itemsContainer);
     container.appendChild(catDiv);
   });
 }
