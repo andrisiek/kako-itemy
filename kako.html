@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kako Itemy</title>
+    <link rel="shortcut icon"
+        href="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/96/38/91/9638918a-f304-4e04-6a18-22e117bacbd5/AppIcon-1x_U007emarketing-0-8-0-0-85-220-0.png/512x512bb.jpg"
+        type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Kako Itemy</h1>
+
+    <button id="exportBtn">Eksportuj do JSON</button>
+
+    <button id="importBtn">Importuj z JSON</button>
+
+    <h1 id="lacznacena"></h1>
+
+    <input type="file" id="importFile" accept="application/json" style="display:none;">
+
+    <form id="addForm">
+        <h2>Dodaj nowy produkt</h2>
+        <input type="text" id="name" placeholder="Nazwa" required>
+        <input type="number" id="price" placeholder="Cena" required>
+        <input type="text" id="img" placeholder="Link do zdjęcia" required>
+        <input type="text" id="link" placeholder="Link do sklepu" required>
+        <select id="category" required>
+            <option value="">Wybierz kategorię</option>
+            <option>Buty</option>
+            <option>Sportowe Buty</option>
+            <option>Bielizna/Skarpetki</option>
+            <option>Bluzy</option>
+            <option>Kurtki</option>
+            <option>Koszulki</option>
+            <option>Sportowe Koszulki</option>
+            <option>Polo</option>
+            <option>Dresy</option>
+            <option>Spodnie</option>
+            <option>Szorty</option>
+            <option>Sportowe Ciuchy</option>
+            <option>Nakrycie Głowy</option>
+            <option>Paski</option>
+            <option>Akcesoria</option>
+            <option>Plecaki</option>
+            <option>Portfele</option>
+            <option>Perfumy</option>
+            <option>Zegarki</option>
+        </select>
+        <button type="submit">Dodaj</button>
+    </form>
+
+    <div id="container"></div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h3>Edytuj produkt</h3>
+            <label>Nazwa</label>
+            <input type="text" id="editName" placeholder="Nazwa">
+            <label>Cena</label>
+            <input type="number" id="editPrice" placeholder="Cena">
+            <label>Link do zdjęcia</label>
+            <input type="text" id="editImg" placeholder="Link do zdjęcia">
+            <label>Link do sklepu</label>
+            <input type="text" id="editLink" placeholder="Link do sklepu">
+            <label>Kategoria</label>
+            <select id="editCategory">
+                <option>Buty</option>
+                <option>Sportowe Buty</option>
+                <option>Bielizna/Skarpetki</option>
+                <option>Bluzy</option>
+                <option>Kurtki</option>
+                <option>Koszulki</option>
+                <option>Sportowe Koszulki</option>
+                <option>Polo</option>
+                <option>Dresy</option>
+                <option>Spodnie</option>
+                <option>Szorty</option>
+                <option>Sportowe Ciuchy</option>
+                <option>Nakrycie Głowy</option>
+                <option>Paski</option>
+                <option>Akcesoria</option>
+                <option>Plecaki</option>
+                <option>Portfele</option>
+                <option>Perfumy</option>
+                <option>Zegarki</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="save-btn" id="saveEdit">Zapisz</button>
+                <button class="cancel-btn" id="cancelEdit">Anuluj</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
