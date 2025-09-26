@@ -24,6 +24,7 @@ function render() {
     const title = document.createElement('h2');
     title.textContent = cat;
     catDiv.appendChild(title);
+    
 
     items.filter(i => i.category === cat).forEach(item => {
       const div = document.createElement('div');
@@ -168,18 +169,21 @@ editModal.addEventListener('click', (e) => {
 
 // eksport do JSON
 document.getElementById('exportBtn').addEventListener('click', () => {
-  const dataToExport = {
-    items,
-    statuses
-  };
+  // łączymy items + status w jeden obiekt
+  const dataToExport = items.map(item => ({
+    ...item,
+    status: statuses[item.id] || 'chciany'
+  }));
+
   const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'kako_itemy.json';
+  a.download = 'produkty_mysql.json';
   a.click();
   URL.revokeObjectURL(url);
 });
+
 
 // obsługa importu JSON
 document.getElementById('importBtn').addEventListener('click', () => {
@@ -194,23 +198,34 @@ document.getElementById('importFile').addEventListener('change', (event) => {
   reader.onload = (e) => {
     try {
       const importedData = JSON.parse(e.target.result);
-      if (importedData.items && importedData.statuses) {
+
+      if (Array.isArray(importedData)) {
+        // nowy format (lista produktów)
+        items = importedData.map(({status, ...rest}) => rest);
+        statuses = {};
+        importedData.forEach(prod => {
+          statuses[prod.id] = prod.status || 'chciany';
+        });
+      } else if (importedData.items && importedData.statuses) {
+        // stary format (dla kompatybilności)
         items = importedData.items;
         statuses = importedData.statuses;
-        localStorage.setItem('items', JSON.stringify(items));
-        localStorage.setItem('statuses', JSON.stringify(statuses));
-        render();
-        logWantedSum();
-        alert("Dane zostały zaimportowane ✅");
       } else {
-        alert("Nieprawidłowy plik JSON ❌");
+        throw new Error("Nieprawidłowy format JSON");
       }
+
+      localStorage.setItem('items', JSON.stringify(items));
+      localStorage.setItem('statuses', JSON.stringify(statuses));
+      render();
+      logWantedSum();
+      alert("Dane zostały zaimportowane ✅");
     } catch (err) {
       alert("Błąd podczas odczytu pliku ❌");
     }
   };
   reader.readAsText(file);
 });
+
 
 render();
 logWantedSum();
