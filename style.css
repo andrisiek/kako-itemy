@@ -307,11 +307,10 @@ h2 {
 
 /* Łączna cena */
 #lacznacena {
-    margin-top: -62px;
-    margin-bottom: 5px;
     color: #b22222;
     text-align: center;
     width: auto;
+    font-weight: bolder;
     text-decoration: underline;
 }
 
