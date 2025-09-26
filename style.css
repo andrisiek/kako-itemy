@@ -41,27 +41,30 @@ h2 {
 }
 
 .item .select-item {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-  appearance: none; /* usuwa domyślny wygląd */
-  border: 2px solid #b22222;
-  border-radius: 50%; /* okrągły */
-  background-color: #fff;
-  transition: background 0.2s, transform 0.2s;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    appearance: none;
+    /* usuwa domyślny wygląd */
+    border: 2px solid #b22222;
+    border-radius: 50%;
+    /* okrągły */
+    background-color: #fff;
+    transition: background 0.2s, transform 0.2s;
 }
 
 .item .select-item:checked {
-  background-color: #b22222;
+    background-color: #b22222;
 }
 
 .item .select-item:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 6px rgba(178,34,34,0.5);
+    transform: scale(1.2);
+    box-shadow: 0 0 6px rgba(178, 34, 34, 0.5);
 }
+
 .item img {
     width: 160px;
     height: 160px;
@@ -263,7 +266,8 @@ h2 {
 
 /* Przyciski export/import */
 #exportBtn,
-#importBtn {
+#importBtn,
+#darkModeToggle {
     padding: 10px 16px;
     border: none;
     border-radius: 8px;
@@ -279,6 +283,16 @@ h2 {
 
 #exportBtn:hover {
     background: #8b0000;
+}
+
+#darkModeToggle{
+    background: #121212;
+    margin-right: 10px;
+    color: #fff;
+}
+
+#darkModeToggle:hover{
+    background: #000000;
 }
 
 #importBtn {
@@ -359,4 +373,114 @@ h2 {
         width: 100%;
         height: auto;
     }
+}
+
+/* TRYB CIEMNY */
+body.dark-mode {
+    background: #121212;
+    color: #eee;
+}
+
+body.dark-mode h1,
+body.dark-mode h2 {
+    color: #ff6b6b;
+}
+
+body.dark-mode .item {
+    background: #1e1e1e;
+    border: 1px solid #ff6b6b;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+body.dark-mode .item p,
+body.dark-mode .item a {
+    color: #eee;
+}
+
+body.dark-mode .item a {
+    color: #ff6b6b;
+}
+
+body.dark-mode .item button.wanted {
+    background: #ff4c4c;
+}
+
+body.dark-mode .item button.wanted:hover {
+    background: #cc0000;
+}
+
+body.dark-mode .item button.bought {
+    background: #555;
+}
+
+body.dark-mode .item button.bought:hover {
+    background: #777;
+}
+
+body.dark-mode #addForm,
+body.dark-mode .modal-content {
+    background: #1e1e1e;
+    border: 1px solid #ff6b6b;
+}
+
+body.dark-mode #addForm input,
+body.dark-mode #addForm select,
+body.dark-mode .modal-content input,
+body.dark-mode .modal-content select {
+    background: #2a2a2a;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+body.dark-mode #addForm button,
+body.dark-mode #bulkActions button,
+body.dark-mode #exportBtn,
+body.dark-mode #importBtn,
+body.dark-mode #darkModeToggle {
+    color: #fff;
+}
+
+body.dark-mode #exportBtn {
+    background: #ff4c4c;
+}
+
+body.dark-mode #exportBtn:hover {
+    background: #cc0000;
+}
+
+body.dark-mode #importBtn {
+    background: #555;
+}
+
+body.dark-mode #importBtn:hover {
+    background: #777;
+}
+
+body.dark-mode #darkModeToggle {
+    background: #888;
+}
+
+body.dark-mode #darkModeToggle:hover {
+    background: #aaa;
+}
+
+body.dark-mode .modal-buttons button.save-btn {
+    background: #ff4c4c;
+}
+
+body.dark-mode .modal-buttons button.save-btn:hover {
+    background: #cc0000;
+}
+
+body.dark-mode .modal-buttons button.cancel-btn {
+    background: #555;
+}
+
+body.dark-mode .modal-buttons button.cancel-btn:hover {
+    background: #777;
+}
+
+body.dark-mode #lacznacena {
+    color: #ff6b6b;
+    text-decoration: underline;
 }

@@ -288,3 +288,20 @@ document.getElementById('bulkDeleteBtn').addEventListener('click', () => {
 
 render();
 logWantedSum();
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+darkModeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  // zapis do localStorage, żeby zapamiętać wybór
+  if (document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('darkMode', 'enabled');
+  } else {
+    localStorage.setItem('darkMode', 'disabled');
+  }
+});
+
+// przy starcie strony ustaw tryb ciemny jeśli był wcześniej włączony
+if (localStorage.getItem('darkMode') === 'enabled') {
+  document.body.classList.add('dark-mode');
+}
