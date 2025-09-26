@@ -17,7 +17,8 @@
 
     <button id="importBtn">Importuj z JSON</button>
 
-    <h1 id="lacznacena"></h1>
+    <h1 id="lacznacena">Łączna cena: 0 zł</h1>
+
 
     <input type="file" id="importFile" accept="application/json" style="display:none;">
 
@@ -51,6 +52,15 @@
         </select>
         <button type="submit">Dodaj</button>
     </form>
+
+    <!-- Panel masowej akcji -->
+    <div id="bulkActions" style="margin-bottom: 15px;">
+        <button id="toggleSelectAll">Zaznacz wszystko</button>
+        <button id="bulkWantedBtn">Oznacz jako Chciany</button>
+        <button id="bulkBoughtBtn">Oznacz jako Kupiony</button>
+        <button id="bulkDeleteBtn">Usuń zaznaczone</button>
+    </div>
+
 
     <div id="container"></div>
 

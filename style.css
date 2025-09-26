@@ -20,6 +20,8 @@ h2 {
 }
 
 .item {
+    position: relative;
+    /* potrzebne do pozycjonowania checkboxa */
     width: 220px;
     border: 1px solid #f08080;
     border-radius: 15px;
@@ -38,6 +40,28 @@ h2 {
     box-shadow: 0 6px 20px rgba(178, 34, 34, 0.3);
 }
 
+.item .select-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  appearance: none; /* usuwa domyślny wygląd */
+  border: 2px solid #b22222;
+  border-radius: 50%; /* okrągły */
+  background-color: #fff;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.item .select-item:checked {
+  background-color: #b22222;
+}
+
+.item .select-item:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 6px rgba(178,34,34,0.5);
+}
 .item img {
     width: 160px;
     height: 160px;
@@ -60,51 +84,52 @@ h2 {
     font-weight: bold;
 }
 
+/* PRZYCISKI PRODUKTU */
 .item button {
     margin-top: 8px;
     padding: 6px 12px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: background 0.2s;
 }
 
-.wanted {
+.item .wanted {
     background: #dc143c;
     color: white;
 }
 
-.wanted:hover {
+.item .wanted:hover {
     background: #a10e2a;
 }
 
-.bought {
+.item .bought {
     background: #aaa;
     color: white;
 }
 
-.bought:hover {
+.item .bought:hover {
     background: #888;
 }
 
-.delete {
+.item .delete {
     background: #8b0000;
     color: white;
     margin-left: 5px;
 }
 
-.delete:hover {
+.item .delete:hover {
     background: #5a0000;
 }
 
-.edit {
+.item .edit {
     background: #ff8c00;
     color: white;
     margin-left: 5px;
 }
 
-.edit:hover {
+.item .edit:hover {
     background: #cc7000;
 }
 
@@ -268,10 +293,41 @@ h2 {
 
 /* Łączna cena */
 #lacznacena {
+    margin-top: -62px;
+    margin-bottom: 5px;
     color: #b22222;
     text-align: center;
     width: auto;
     text-decoration: underline;
+}
+
+#bulkActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#bulkActions button {
+    background: #b22222;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+#bulkActions button:hover {
+    background: #8b0000;
+}
+
+#bulkActions #selectAll {
+    margin-right: 5px;
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
 /* Responsywność */

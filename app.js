@@ -13,6 +13,21 @@ const saveEdit = document.getElementById('saveEdit');
 const cancelEdit = document.getElementById('cancelEdit');
 let editingItemId = null;
 
+const toggleSelectAllBtn = document.getElementById('toggleSelectAll');
+
+function updateToggleSelectAllText() {
+  const checkboxes = document.querySelectorAll('.select-item');
+  const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(cb => cb.checked);
+  toggleSelectAllBtn.textContent = allChecked ? 'Odznacz wszystko' : 'Zaznacz wszystko';
+}
+
+toggleSelectAllBtn.addEventListener('click', () => {
+  const checkboxes = document.querySelectorAll('.select-item');
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  checkboxes.forEach(cb => cb.checked = !allChecked);
+  updateToggleSelectAllText();
+});
+
 function render() {
   container.innerHTML = '';
   const categories = [...new Set(items.map(item => item.category))];
@@ -24,11 +39,20 @@ function render() {
     const title = document.createElement('h2');
     title.textContent = cat;
     catDiv.appendChild(title);
-    
+
 
     items.filter(i => i.category === cat).forEach(item => {
       const div = document.createElement('div');
       div.className = 'item';
+
+      // W miejscu, gdzie tworzysz div.item:
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'select-item';
+      checkbox.dataset.id = item.id;
+      checkbox.addEventListener('change', updateToggleSelectAllText);
+      div.appendChild(checkbox);
+
 
       const img = document.createElement('img');
       img.src = item.img;
@@ -47,6 +71,8 @@ function render() {
       link.textContent = 'Link';
       link.target = '_blank';
       div.appendChild(link);
+
+
 
       div.appendChild(document.createElement('br'));
 
@@ -100,6 +126,8 @@ function render() {
     catDiv.appendChild(itemsContainer);
     container.appendChild(catDiv);
   });
+
+  updateToggleSelectAllText();
 }
 
 function logWantedSum() {
@@ -201,7 +229,7 @@ document.getElementById('importFile').addEventListener('change', (event) => {
 
       if (Array.isArray(importedData)) {
         // nowy format (lista produktów)
-        items = importedData.map(({status, ...rest}) => rest);
+        items = importedData.map(({ status, ...rest }) => rest);
         statuses = {};
         importedData.forEach(prod => {
           statuses[prod.id] = prod.status || 'chciany';
@@ -226,6 +254,37 @@ document.getElementById('importFile').addEventListener('change', (event) => {
   reader.readAsText(file);
 });
 
+// Pobiera wszystkie zaznaczone elementy
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.select-item:checked')).map(cb => parseInt(cb.dataset.id));
+}
+
+// Masowe akcje
+document.getElementById('bulkWantedBtn').addEventListener('click', () => {
+  const selectedIds = getSelectedIds();
+  selectedIds.forEach(id => statuses[id] = 'chciany');
+  localStorage.setItem('statuses', JSON.stringify(statuses));
+  render();
+  logWantedSum();
+});
+
+document.getElementById('bulkBoughtBtn').addEventListener('click', () => {
+  const selectedIds = getSelectedIds();
+  selectedIds.forEach(id => statuses[id] = 'kupiony');
+  localStorage.setItem('statuses', JSON.stringify(statuses));
+  render();
+  logWantedSum();
+});
+
+document.getElementById('bulkDeleteBtn').addEventListener('click', () => {
+  const selectedIds = getSelectedIds();
+  items = items.filter(item => !selectedIds.includes(item.id));
+  selectedIds.forEach(id => delete statuses[id]);
+  localStorage.setItem('items', JSON.stringify(items));
+  localStorage.setItem('statuses', JSON.stringify(statuses));
+  render();
+  logWantedSum();
+});
 
 render();
 logWantedSum();
