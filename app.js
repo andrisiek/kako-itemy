@@ -179,7 +179,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'produkty_mysql.json';
+  a.download = 'kako_itemy.json';
   a.click();
   URL.revokeObjectURL(url);
 });
