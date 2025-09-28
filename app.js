@@ -40,19 +40,17 @@ function render() {
     title.textContent = cat;
     catDiv.appendChild(title);
 
-
     items.filter(i => i.category === cat).forEach(item => {
       const div = document.createElement('div');
       div.className = 'item';
 
-      // W miejscu, gdzie tworzysz div.item:
+      // checkbox
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.className = 'select-item';
       checkbox.dataset.id = item.id;
       checkbox.addEventListener('change', updateToggleSelectAllText);
       div.appendChild(checkbox);
-
 
       const img = document.createElement('img');
       img.src = item.img;
@@ -72,17 +70,15 @@ function render() {
       link.target = '_blank';
       div.appendChild(link);
 
-
-
       div.appendChild(document.createElement('br'));
 
       // status button
       const button = document.createElement('button');
-      const status = statuses[item.id] || 'chciany';
-      button.textContent = status;
-      button.className = status === 'chciany' ? 'wanted' : 'bought';
+      const status = statuses[item.id] || 'teraz';
+      button.textContent = status === 'teraz' ? 'Teraz' : 'Później';
+      button.className = status === 'teraz' ? 'wanted' : 'bought';
       button.addEventListener('click', () => {
-        statuses[item.id] = statuses[item.id] === 'kupiony' ? 'chciany' : 'kupiony';
+        statuses[item.id] = statuses[item.id] === 'pozniej' ? 'teraz' : 'pozniej';
         localStorage.setItem('statuses', JSON.stringify(statuses));
         render();
         logWantedSum();
@@ -110,7 +106,6 @@ function render() {
       editBtn.style.marginLeft = "5px";
       editBtn.addEventListener('click', () => {
         editingItemId = item.id;
-        // wypełnij formularz aktualnymi danymi
         editName.value = item.name;
         editPrice.value = item.price;
         editImg.value = item.img;
@@ -133,11 +128,11 @@ function render() {
 function logWantedSum() {
   const h1laczna = document.getElementById("lacznacena");
   const sum = items.reduce((acc, item) => {
-    const status = statuses[item.id] || 'chciany';
-    return status === 'chciany' ? acc + item.price : acc;
+    const status = statuses[item.id] || 'teraz';
+    return status === 'teraz' ? acc + item.price : acc;
   }, 0);
-  console.log('Łączna cena wszystkich chcianych:', sum + ' zł');
-  h1laczna.innerHTML = "Łączna cena wszystkich chcianych: " + sum + " zł";
+  console.log('Łączna cena wszystkich teraz:', sum + ' zł');
+  h1laczna.innerHTML = "Łączna cena wszystkich teraz: " + sum + " zł";
 }
 
 // obsługa zapisu edycji
@@ -169,7 +164,7 @@ cancelEdit.addEventListener('click', () => {
   editModal.style.display = 'none';
 });
 
-// Twój formularz dodawania zostaje bez zmian
+// formularz dodawania
 document.getElementById('addForm').addEventListener('submit', e => {
   e.preventDefault();
   const newItem = {
@@ -187,7 +182,7 @@ document.getElementById('addForm').addEventListener('submit', e => {
   e.target.reset();
 });
 
-// zamykanie modala po kliknięciu w tło
+// zamykanie modala
 editModal.addEventListener('click', (e) => {
   if (e.target === editModal) {
     editingItemId = null;
@@ -197,10 +192,9 @@ editModal.addEventListener('click', (e) => {
 
 // eksport do JSON
 document.getElementById('exportBtn').addEventListener('click', () => {
-  // łączymy items + status w jeden obiekt
   const dataToExport = items.map(item => ({
     ...item,
-    status: statuses[item.id] || 'chciany'
+    status: statuses[item.id] || 'teraz'
   }));
 
   const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
@@ -212,8 +206,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   URL.revokeObjectURL(url);
 });
 
-
-// obsługa importu JSON
+// import JSON
 document.getElementById('importBtn').addEventListener('click', () => {
   document.getElementById('importFile').click();
 });
@@ -228,14 +221,12 @@ document.getElementById('importFile').addEventListener('change', (event) => {
       const importedData = JSON.parse(e.target.result);
 
       if (Array.isArray(importedData)) {
-        // nowy format (lista produktów)
         items = importedData.map(({ status, ...rest }) => rest);
         statuses = {};
         importedData.forEach(prod => {
-          statuses[prod.id] = prod.status || 'chciany';
+          statuses[prod.id] = prod.status || 'teraz';
         });
       } else if (importedData.items && importedData.statuses) {
-        // stary format (dla kompatybilności)
         items = importedData.items;
         statuses = importedData.statuses;
       } else {
@@ -254,15 +245,15 @@ document.getElementById('importFile').addEventListener('change', (event) => {
   reader.readAsText(file);
 });
 
-// Pobiera wszystkie zaznaczone elementy
+// zaznaczone elementy
 function getSelectedIds() {
   return Array.from(document.querySelectorAll('.select-item:checked')).map(cb => parseInt(cb.dataset.id));
 }
 
-// Masowe akcje
+// masowe akcje
 document.getElementById('bulkWantedBtn').addEventListener('click', () => {
   const selectedIds = getSelectedIds();
-  selectedIds.forEach(id => statuses[id] = 'chciany');
+  selectedIds.forEach(id => statuses[id] = 'teraz');
   localStorage.setItem('statuses', JSON.stringify(statuses));
   render();
   logWantedSum();
@@ -270,7 +261,7 @@ document.getElementById('bulkWantedBtn').addEventListener('click', () => {
 
 document.getElementById('bulkBoughtBtn').addEventListener('click', () => {
   const selectedIds = getSelectedIds();
-  selectedIds.forEach(id => statuses[id] = 'kupiony');
+  selectedIds.forEach(id => statuses[id] = 'pozniej');
   localStorage.setItem('statuses', JSON.stringify(statuses));
   render();
   logWantedSum();
@@ -293,7 +284,6 @@ const darkModeToggle = document.getElementById('darkModeToggle');
 
 darkModeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
-  // zapis do localStorage, żeby zapamiętać wybór
   if (document.body.classList.contains('dark-mode')) {
     localStorage.setItem('darkMode', 'enabled');
   } else {
@@ -301,7 +291,6 @@ darkModeToggle.addEventListener('click', () => {
   }
 });
 
-// przy starcie strony ustaw tryb ciemny jeśli był wcześniej włączony
 if (localStorage.getItem('darkMode') === 'enabled') {
   document.body.classList.add('dark-mode');
 }
