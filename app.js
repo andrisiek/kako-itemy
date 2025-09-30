@@ -28,6 +28,7 @@ toggleSelectAllBtn.addEventListener('click', () => {
   updateToggleSelectAllText();
 });
 
+
 function render() {
   container.innerHTML = '';
   const categories = [...new Set(items.map(item => item.category))];
@@ -36,9 +37,34 @@ function render() {
     catDiv.className = 'category';
     const itemsContainer = document.createElement('div');
     itemsContainer.className = 'items-container';
+
+    // nagłówek + przycisk "Zaznacz kategorię"
+    const header = document.createElement('div');
+    header.style.display = "flex";
+    header.style.alignItems = "center";
+    header.style.gap = "10px";
+
     const title = document.createElement('h2');
     title.textContent = cat;
-    catDiv.appendChild(title);
+
+    const selectAllBtn = document.createElement('button');
+    selectAllBtn.textContent = "Zaznacz kategorię";
+    selectAllBtn.style.padding = "5px 10px";
+    selectAllBtn.style.border = "none";
+    selectAllBtn.style.borderRadius = "6px";
+    selectAllBtn.style.cursor = "pointer";
+    selectAllBtn.style.background = "#b22222";
+    selectAllBtn.style.color = "white";
+    selectAllBtn.addEventListener('click', () => {
+      const checkboxes = itemsContainer.querySelectorAll('.select-item');
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      checkboxes.forEach(cb => cb.checked = !allChecked);
+      updateToggleSelectAllText();
+    });
+
+    header.appendChild(title);
+    header.appendChild(selectAllBtn);
+    catDiv.appendChild(header);
 
     items.filter(i => i.category === cat).forEach(item => {
       const div = document.createElement('div');
@@ -117,7 +143,7 @@ function render() {
 
       itemsContainer.appendChild(div);
     });
-    catDiv.appendChild(title);
+
     catDiv.appendChild(itemsContainer);
     container.appendChild(catDiv);
   });
